@@ -398,21 +398,24 @@ def updateExistingCSV(fname):
 def main():
     #updateExistingCSV('practice2.csv')
     #print("file writing was successful")
+    
+    load_dotenv()
+    g = Github(os.environ["MY_TOKEN"])
+    repo_owner = os.environ["THE_OWNER"]
+    repo_name = 'AirportCode'  # Name of your forked repository
+    token = os.environ["MY_TOKEN"]  # Your GitHub personal access token
+    local_csv_path = 'practice2.csv'
+    repo_csv_path = "practice2.csv"
+    commit_message = 'Update CSV file'
+    df = pd.read_csv(local_csv_path)
+    csv_content = df.to_csv(index=False)
+    repo = g.get_user(repo_owner).get_repo(repo_name)
+
+    
+
 
 
     
-    load_dotenv()
-    repo_owner = os.environ["THE_OWNER"]
-    repo_name = 'AirportCode'  # Name of your forked repository
-    file_path = 'practice2.csv'  # Path to the CSV file in the repository
-    token = os.environ["MY_TOKEN"]  # Your GitHub personal access token
-    commit_message = 'Update CSV file'
-    local_repo_path = '/Users/steevie./Documents/AirportProject/github./AirportCode'  # Local path to clone the repo 
-
-
-
-
-
     while True:
 
         current_time = datetime.datetime.now()
@@ -444,36 +447,20 @@ def main():
                        , '23:10:00', '23:15:00', '23:20:00', '23:25:00', '23:30:00', '23:35:00', '23:40:00', '23:45:00', '23:50:00', '23:55:00']:
             updateExistingCSV('practice2.csv')
             print('CSV has been updated at: ' + timeNow)
-            # Authenticate to GitHub
-            github = Github(token)
-            repo = github.get_user(repo_owner).get_repo(repo_name)
-            # Fetch the CSV file from the repository
-            url = f'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/main/{file_path}'
-            response = requests.get(url)
-
-            # Read the CSV file into a DataFrame
-            df = pd.read_csv(StringIO(response.text))
-
-            # Save the modified DataFrame to a local file
-            local_csv_path = os.path.join(local_repo_path, file_path)
-            df.to_csv(local_csv_path, index=False)
-
-            # Ensure the local repository is up-to-date
-            os.chdir(local_repo_path)
-            subprocess.run(["git", "pull", "origin", "main"])
-
-            # Stage the changes, commit, and push to the forked repository
-            subprocess.run(["git", "add", file_path])
-            subprocess.run(["git", "commit", "-m", commit_message])
-            subprocess.run(["git", "push", "origin", "main"])
-            print("github reposit. has been updated successfully!")
+            
+            try:
+                # If the file already exists, update it
+                contents = repo.get_contents(repo_csv_path)
+                repo.update_file(repo_csv_path, "Updated CSV file", csv_content, contents.sha)
+                print("File updated successfully.")
+            except Exception as e:
+                # If the file doesn't exist, create it
+                repo.create_file(repo_csv_path, "Initial commit", csv_content)
+                print("File created successfully.")
+            
+            
             time.sleep(240)
-        # Uncomment the functions you want to run
-        # createYesterdayCSV()
-        # flightDepartureScraper()
-        #createCSV('practice2.csv')
-        #updateExistingCSV('practice2.csv')
-    
+            
 
 
 main()
