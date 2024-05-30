@@ -19,6 +19,8 @@ from io import StringIO
 import os
 import subprocess
 from dotenv import dotenv_values, load_dotenv
+from git import Repo
+
 
 
 
@@ -452,12 +454,16 @@ def main():
                 # If the file already exists, update it
                 contents = repo.get_contents(repo_csv_path)
                 repo.update_file(repo_csv_path, "Updated CSV file", csv_content, contents.sha)
-                print("File updated successfully.")
+                repo = Repo('/Users/steevie./Documents/AirportProject/github./AirportCode')
+                repo.git.add(update=True)
+                repo.index.commit('Python Script AutoUpdate')
+                origin = repo.remote(name='origin')
+                origin.push()
+                
             except Exception as e:
                 # If the file doesn't exist, create it
                 repo.create_file(repo_csv_path, "Initial commit", csv_content)
                 print("File created successfully.")
-            
             
             time.sleep(240)
             
