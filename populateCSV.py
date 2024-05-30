@@ -450,9 +450,6 @@ def main():
             # Read the CSV file into a DataFrame
             df = pd.read_csv(StringIO(response.text))
 
-            # Modify the DataFrame
-            df['test_col'] = "new_test_val"
-
             # Save the modified DataFrame to a local file
             local_csv_path = os.path.join(local_repo_path, file_path)
             df.to_csv(local_csv_path, index=False)
