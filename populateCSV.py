@@ -405,33 +405,6 @@ def main():
     local_repo_path = '/Users/steevie./Documents/AirportProject/github./AirportCode'  # Local path to clone the repo 
 
 
-     # Authenticate to GitHub
-    github = Github(token)
-    repo = github.get_user(repo_owner).get_repo(repo_name)
-    # Fetch the CSV file from the repository
-    url = f'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/main/{file_path}'
-    response = requests.get(url)
-
-    # Read the CSV file into a DataFrame
-    df = pd.read_csv(StringIO(response.text))
-
-    # Modify the DataFrame
-    df['test_col'] = "new_test_val"
-
-    # Save the modified DataFrame to a local file
-    local_csv_path = os.path.join(local_repo_path, file_path)
-    df.to_csv(local_csv_path, index=False)
-
-    # Ensure the local repository is up-to-date
-    os.chdir(local_repo_path)
-    subprocess.run(["git", "pull", "origin", "main"])
-
-    # Stage the changes, commit, and push to the forked repository
-    subprocess.run(["git", "add", file_path])
-    subprocess.run(["git", "commit", "-m", commit_message])
-    subprocess.run(["git", "push", "origin", "main"])
-
-
 
 
 
@@ -467,6 +440,32 @@ def main():
                        , '23:10:00', '23:15:00', '23:20:00', '23:25:00', '23:30:00', '23:35:00', '23:40:00', '23:45:00', '23:50:00', '23:55:00']:
             updateExistingCSV('practice2.csv')
             print('CSV has been updated at: ' + timeNow)
+            # Authenticate to GitHub
+            github = Github(token)
+            repo = github.get_user(repo_owner).get_repo(repo_name)
+            # Fetch the CSV file from the repository
+            url = f'https://raw.githubusercontent.com/{repo_owner}/{repo_name}/main/{file_path}'
+            response = requests.get(url)
+
+            # Read the CSV file into a DataFrame
+            df = pd.read_csv(StringIO(response.text))
+
+            # Modify the DataFrame
+            df['test_col'] = "new_test_val"
+
+            # Save the modified DataFrame to a local file
+            local_csv_path = os.path.join(local_repo_path, file_path)
+            df.to_csv(local_csv_path, index=False)
+
+            # Ensure the local repository is up-to-date
+            os.chdir(local_repo_path)
+            subprocess.run(["git", "pull", "origin", "main"])
+
+            # Stage the changes, commit, and push to the forked repository
+            subprocess.run(["git", "add", file_path])
+            subprocess.run(["git", "commit", "-m", commit_message])
+            subprocess.run(["git", "push", "origin", "main"])
+            print("github reposit. has been updated successfully!")
             time.sleep(240)
         # Uncomment the functions you want to run
         # createYesterdayCSV()
