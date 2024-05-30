@@ -399,7 +399,7 @@ def main():
     load_dotenv()
     repo_owner = os.environ["THE_OWNER"]
     repo_name = 'AirportCode'  # Name of your forked repository
-    file_path = 'practice2.csv'  # Path to the CSV file in the repository
+    file_path = '/Users/steevie./Documents/AirportProject/github./AirportCode/practice2.csv'  # Path to the CSV file in the repository
     token = os.environ["MY_TOKEN"]  # Your GitHub personal access token
     commit_message = 'Update CSV file'
     local_repo_path = '/Users/steevie./Documents/AirportProject/github./AirportCode'  # Local path to clone the repo 
