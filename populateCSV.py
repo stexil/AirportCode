@@ -149,7 +149,7 @@ def flightDepartureScraper():
     mainScraper()
 
     createNewCSV("todaysDepartures.csv")
-    addDataToCSV("TodaysDepartures.csv", departureData)
+    addDataToCSV("todaysDepartures.csv", departureData)
 
     time.sleep(2)
     driver.quit()
@@ -397,8 +397,9 @@ def updateExistingCSV(fname):
 # CSV file every 15 minutes, starting at 12:15 AM.
 def main():
     updateExistingCSV('practice2.csv')
+    print("file writing was successful")
 
-    
+
     """
     load_dotenv()
     repo_owner = os.environ["THE_OWNER"]
@@ -407,7 +408,6 @@ def main():
     token = os.environ["MY_TOKEN"]  # Your GitHub personal access token
     commit_message = 'Update CSV file'
     local_repo_path = '/Users/steevie./Documents/AirportProject/github./AirportCode'  # Local path to clone the repo 
-
 
 
 
