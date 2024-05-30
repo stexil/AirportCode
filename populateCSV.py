@@ -18,6 +18,8 @@ import pandas as pd
 from io import StringIO
 import os
 import subprocess
+from dotenv import dotenv_values, load_dotenv
+
 
 
 
@@ -394,10 +396,11 @@ def updateExistingCSV(fname):
 # This method uses the time module to automatically run and add a row of data to an existing
 # CSV file every 15 minutes, starting at 12:15 AM.
 def main():
-    repo_owner = 'stexil'
+    load_dotenv()
+    repo_owner = os.environ["THE_OWNER"]
     repo_name = 'AirportCode'  # Name of your forked repository
     file_path = 'practice2.csv'  # Path to the CSV file in the repository
-    token = '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'  # Your GitHub personal access token
+    token = os.environ["MY_TOKEN"]  # Your GitHub personal access token
     commit_message = 'Update CSV file'
     local_repo_path = '/Users/steevie./Documents/AirportProject/github./AirportCode'  # Local path to clone the repo 
 
